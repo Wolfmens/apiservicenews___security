@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    generate-dll: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/novelty_db
+    username: novelty
+    password: 12345
+  hikari:
+    schema: novelty_schema
+    connection-init-sql: CREATE SCHEMA IF NOT EXISTS novelty_schema
+    connection-timeout: 10000
