@@ -6,7 +6,6 @@ import com.study.apiservicenews.model.NoveltyComment;
 import com.study.apiservicenews.reposittory.NoveltyCommentRepository;
 import com.study.apiservicenews.service.NoveltyCommentService;
 import com.study.apiservicenews.service.NoveltyService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

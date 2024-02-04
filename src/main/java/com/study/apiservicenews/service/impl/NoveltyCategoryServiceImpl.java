@@ -5,7 +5,6 @@ import com.study.apiservicenews.model.NoveltyCategory;
 import com.study.apiservicenews.model.NoveltyFilter;
 import com.study.apiservicenews.reposittory.NoveltyCategoryRepository;
 import com.study.apiservicenews.service.NoveltyCategoryService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

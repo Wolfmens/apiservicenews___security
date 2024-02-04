@@ -6,7 +6,6 @@ import com.study.apiservicenews.model.NoveltyFilter;
 import com.study.apiservicenews.service.ClientService;
 import com.study.apiservicenews.web.model.client.ClientResponse;
 import com.study.apiservicenews.web.model.client.ClientWithoutCommentList;
-import com.study.apiservicenews.web.model.client.ClientWithoutCommentResponse;
 import com.study.apiservicenews.web.model.client.IncomingClientRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

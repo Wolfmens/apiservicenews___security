@@ -1,6 +1,5 @@
 package com.study.apiservicenews.service;
 
-import com.study.apiservicenews.model.Client;
 import com.study.apiservicenews.model.Novelty;
 import com.study.apiservicenews.model.NoveltyFilter;
 

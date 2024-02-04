@@ -1,6 +1,5 @@
 package com.study.apiservicenews.web.model.novelty;
 
-import jdk.jfr.Name;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -38,15 +38,4 @@ public class Novelty {
     @ToStringExclude
     @Builder.Default
     private List<NoveltyComment> comments = new ArrayList<>();
-
-    public void addComment(NoveltyComment comment) {
-        comments.add(comment);
-    }
-
-    public void removeComment(NoveltyComment comment) {
-        comments.remove(comment);
-    }
-
-
-
 }

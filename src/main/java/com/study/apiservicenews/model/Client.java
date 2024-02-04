@@ -28,13 +28,4 @@ public class Client {
     @Builder.Default
     private List<Novelty> novelties = new ArrayList<>();
 
-    public void addNovelty(Novelty novelty) {
-        novelties.add(novelty);
-    }
-
-    public void removeNovelty(Novelty novelty) {
-        novelties.remove(novelty);
-    }
-
-
 }

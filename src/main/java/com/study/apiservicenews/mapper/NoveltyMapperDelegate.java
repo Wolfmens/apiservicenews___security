@@ -1,16 +1,11 @@
 package com.study.apiservicenews.mapper;
 
 import com.study.apiservicenews.model.Novelty;
-import com.study.apiservicenews.model.NoveltyCategory;
 import com.study.apiservicenews.service.ClientService;
 import com.study.apiservicenews.service.NoveltyCategoryService;
 import com.study.apiservicenews.web.model.novelty.IncomingNoveltyRequest;
-import com.study.apiservicenews.web.model.novelty.NoveltyWithoutCommentResponse;
-import com.study.apiservicenews.web.model.noveltycategory.NoveltyCategoryRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public abstract class NoveltyMapperDelegate implements NoveltyMapper {

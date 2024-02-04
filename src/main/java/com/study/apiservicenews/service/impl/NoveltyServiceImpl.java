@@ -10,7 +10,6 @@ import com.study.apiservicenews.reposittory.SpecificationNovelty;
 import com.study.apiservicenews.service.ClientService;
 import com.study.apiservicenews.service.NoveltyCategoryService;
 import com.study.apiservicenews.service.NoveltyService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

@@ -5,10 +5,8 @@ import com.study.apiservicenews.model.Client;
 import com.study.apiservicenews.model.NoveltyFilter;
 import com.study.apiservicenews.reposittory.ClientRepository;
 import com.study.apiservicenews.service.ClientService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;

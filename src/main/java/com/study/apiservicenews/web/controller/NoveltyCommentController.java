@@ -3,7 +3,6 @@ package com.study.apiservicenews.web.controller;
 import com.study.apiservicenews.aop.CheckClientId;
 import com.study.apiservicenews.mapper.NoveltyCommentMapper;
 import com.study.apiservicenews.model.NoveltyComment;
-import com.study.apiservicenews.service.NoveltyCategoryService;
 import com.study.apiservicenews.service.NoveltyCommentService;
 import com.study.apiservicenews.web.model.noveltycomment.IncomingNoveltyCommentRequest;
 import com.study.apiservicenews.web.model.noveltycomment.NoveltyCommentListResponse;
