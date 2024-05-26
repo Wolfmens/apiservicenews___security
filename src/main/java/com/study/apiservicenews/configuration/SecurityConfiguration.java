@@ -52,11 +52,17 @@ public class SecurityConfiguration {
                                                    AuthenticationManager authenticationManager) {
         security
                 .authorizeHttpRequests((auth) -> auth
+                        //client requests
                         .requestMatchers(HttpMethod.GET, "/news/client").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/news/client/{id}").hasAnyRole("ADMIN", "MODERATOR", "USER")
                         .requestMatchers(HttpMethod.PUT, "/news/client/{id}").hasAnyRole("ADMIN", "MODERATOR", "USER")
                         .requestMatchers(HttpMethod.DELETE, "/news/client/{id}").hasAnyRole("ADMIN", "MODERATOR", "USER")
                         .requestMatchers(HttpMethod.POST, "/news/client").permitAll()
+                        //novelty cat. requests
+                        .requestMatchers(HttpMethod.GET, "/news/novcat/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
+                        .requestMatchers(HttpMethod.POST, "/news/novcat").hasAnyRole("ADMIN", "MODERATOR")
+                        .requestMatchers(HttpMethod.PUT, "/news/novcat/{id}").hasAnyRole("ADMIN", "MODERATOR")
+                        .requestMatchers(HttpMethod.DELETE, "/news/novcat/{id}").hasAnyRole("ADMIN", "MODERATOR")
                 ).csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement

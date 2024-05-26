@@ -41,7 +41,7 @@ public class CheckRoleAspect {
         boolean hasRoleAdminOrModerator = authentication.getAuthorities().stream().anyMatch((grantedAuthority ->
                 grantedAuthority.getAuthority().contains("ADMIN") ||  grantedAuthority.getAuthority().contains("MODERATOR")));
 
-        if (nameClass.equals("ClientController")) {
+        if(nameClass.equals("ClientController")) {
             var authEntity = clientService.findByName(userDetail.getUsername());
             if (!hasRoleAdminOrModerator && !authEntity.getId().equals(paramEntityId)) {
                 throw new RuntimeException(

@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +25,7 @@ public class NoveltyCategoryController {
     private final NoveltyCategoryMapper noveltyCategoryMapper;
 
     @GetMapping
-
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<NoveltyCategoryListResponse> findAll(@Valid NoveltyFilter filter) {
 
         return ResponseEntity.ok().body(
@@ -32,6 +33,7 @@ public class NoveltyCategoryController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<NoveltyCategoryResponse> findByID(@PathVariable
                                                             @NotNull(message = "Novelty category ID {value.notblank}") Long id) {
 
@@ -40,13 +42,15 @@ public class NoveltyCategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<NoveltyCategoryResponse> create(@RequestBody @Valid IncomingNoveltyCategoryRequest request) {
         NoveltyCategory category = noveltyCategoryService.saveNoveltyCategory(noveltyCategoryMapper.requestToNoveltyCategory(request));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(noveltyCategoryMapper.noveltyCategoryToNoveltyCategoryResponse(category));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<NoveltyCategoryResponse> update(@PathVariable
                                                           @NotNull(message = "Novelty category ID {value.notblank}") Long id,
                                                           @RequestBody @Valid IncomingNoveltyCategoryRequest request) {
@@ -56,6 +60,7 @@ public class NoveltyCategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<Void> delete(@PathVariable
                                        @NotNull(message = "Novelty category ID {value.notblank}") Long id) {
         noveltyCategoryService.deleteById(id);
