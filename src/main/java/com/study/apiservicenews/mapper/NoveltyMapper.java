@@ -6,6 +6,7 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -16,10 +17,10 @@ import java.util.List;
                 NoveltyCommentMapper.class})
 public interface NoveltyMapper {
 
-    Novelty requestToNovelty(IncomingNoveltyRequest request);
+    Novelty requestToNovelty(IncomingNoveltyRequest request, UserDetails userDetails);
 
     @Mapping(source = "noveltyId", target = "id")
-    Novelty requestToNovelty(Long noveltyId, IncomingNoveltyRequest request);
+    Novelty requestToNovelty(Long noveltyId, IncomingNoveltyRequest request, UserDetails userDetails);
 
     NoveltyResponse noveltyToNoveltyResponse(Novelty novelty);
 

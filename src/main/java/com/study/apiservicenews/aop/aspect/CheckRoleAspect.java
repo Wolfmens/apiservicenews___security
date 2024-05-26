@@ -2,6 +2,7 @@ package com.study.apiservicenews.aop.aspect;
 
 import com.study.apiservicenews.security.CustomUserDetail;
 import com.study.apiservicenews.service.ClientService;
+import com.study.apiservicenews.service.NoveltyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class CheckRoleAspect {
 
     private final ClientService clientService;
+
+    private final NoveltyService noveltyService;
 
     @Before(value = "@annotation(com.study.apiservicenews.aop.annotation.CheckRole)")
     public void checkRole(JoinPoint joinPoint) {
@@ -49,6 +52,29 @@ public class CheckRoleAspect {
                                         "Client: {0} by id {1} have not required role (ADMIN or MODERATOR)"
                                         ,userDetail.getUsername()
                                         ,authEntity.getId()));
+            }
+        }
+        if (nameClass.equals("NoveltyController")) {
+            String nameMethod = joinPoint.getSignature().getName();
+            var noveltyEntity = noveltyService.findById(paramEntityId);
+            var authEntity = clientService.findByName(userDetail.getUsername());
+            switch (nameMethod) {
+                case "update" -> {
+                    if (!authEntity.getId().equals(noveltyEntity.getClient().getId())) {
+                        throw new RuntimeException(
+                                MessageFormat.format(
+                                        "Update error!! Novelty by id {0} created by another user",
+                                        noveltyEntity.getId()));
+                    }
+                }
+                case "delete" -> {
+                    if (!hasRoleAdminOrModerator && !authEntity.getId().equals(noveltyEntity.getClient().getId())) {
+                        throw new RuntimeException(
+                                MessageFormat.format(
+                                        "Delete error!! Novelty by id {0} created by another user",
+                                        noveltyEntity.getId()));
+                    }
+                }
             }
         }
     }

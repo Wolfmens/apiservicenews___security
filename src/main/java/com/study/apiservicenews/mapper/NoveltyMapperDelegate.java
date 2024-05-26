@@ -6,6 +6,7 @@ import com.study.apiservicenews.service.NoveltyCategoryService;
 import com.study.apiservicenews.web.model.novelty.IncomingNoveltyRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 public abstract class NoveltyMapperDelegate implements NoveltyMapper {
@@ -17,17 +18,17 @@ public abstract class NoveltyMapperDelegate implements NoveltyMapper {
     private NoveltyCategoryService noveltyCategoryService;
 
     @Override
-    public Novelty requestToNovelty(IncomingNoveltyRequest request) {
+    public Novelty requestToNovelty(IncomingNoveltyRequest request, UserDetails userDetails) {
         Novelty novelty = new Novelty();
         novelty.setTitle(request.getTitle());
-        novelty.setClient(clientService.findById(request.getClientId()));
+        novelty.setClient(clientService.findByName(userDetails.getUsername()));
         novelty.setCategory(noveltyCategoryService.findByName(request.getCategory().getName()));
         return novelty;
     }
 
     @Override
-    public Novelty requestToNovelty(Long noveltyId, IncomingNoveltyRequest request) {
-        Novelty novelty = requestToNovelty(request);
+    public Novelty requestToNovelty(Long noveltyId, IncomingNoveltyRequest request, UserDetails userDetails) {
+        Novelty novelty = requestToNovelty(request, userDetails);
         novelty.setId(noveltyId);
 
         return novelty;

@@ -14,10 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class IncomingNoveltyRequest {
 
-
-    @NotNull(message = "Client id {value.notblank}")
-    private Long clientId;
-
     @NotBlank(message = "Novelty title {value.notblank}")
     @Size(min = 1, max = 40, message = "Novelty title {range.text.value}")
     private String title;

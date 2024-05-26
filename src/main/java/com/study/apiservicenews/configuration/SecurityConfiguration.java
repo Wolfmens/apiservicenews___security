@@ -63,6 +63,11 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/news/novcat").hasAnyRole("ADMIN", "MODERATOR")
                         .requestMatchers(HttpMethod.PUT, "/news/novcat/{id}").hasAnyRole("ADMIN", "MODERATOR")
                         .requestMatchers(HttpMethod.DELETE, "/news/novcat/{id}").hasAnyRole("ADMIN", "MODERATOR")
+                        //novelty requests
+                        .requestMatchers(HttpMethod.GET, "/news/novelty/**").hasAnyRole("ADMIN", "MODERATOR", "USER")
+                        .requestMatchers(HttpMethod.POST, "/news/novelty").hasAnyRole("ADMIN", "MODERATOR", "USER")
+                        .requestMatchers(HttpMethod.PUT, "/news/novelty/{id}").hasAnyRole("ADMIN", "MODERATOR", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/news/novelty/{id}").hasAnyRole("ADMIN", "MODERATOR", "USER")
                 ).csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement
