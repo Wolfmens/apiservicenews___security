@@ -1,6 +1,6 @@
 package com.study.apiservicenews.web.controller;
 
-import com.study.apiservicenews.aop.CheckClientId;
+import com.study.apiservicenews.aop.annotation.CheckClientId;
 import com.study.apiservicenews.mapper.NoveltyMapper;
 import com.study.apiservicenews.model.Novelty;
 import com.study.apiservicenews.model.NoveltyFilter;

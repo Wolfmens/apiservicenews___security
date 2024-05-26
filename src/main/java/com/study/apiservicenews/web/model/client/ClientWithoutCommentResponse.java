@@ -17,6 +17,8 @@ public class ClientWithoutCommentResponse {
 
     private String name;
 
+    private String password;
+
     private List<NoveltyWithoutCommentResponse> novelties = new ArrayList<>();
 
 }

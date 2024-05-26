@@ -17,5 +17,7 @@ public class ClientResponse {
 
     private String name;
 
+    private String password;
+
     private List<NoveltyResponse> novelties = new ArrayList<>();
 }

@@ -23,6 +23,14 @@ public class Client {
     @Column(name = "client_name")
     private String name;
 
+    private String password;
+
+    @Builder.Default
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Role> roles = new ArrayList<>();
+
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     @ToStringExclude
     @Builder.Default

@@ -3,10 +3,12 @@ package com.study.apiservicenews.service.impl;
 import com.study.apiservicenews.exception.NotFoundEntityException;
 import com.study.apiservicenews.model.Client;
 import com.study.apiservicenews.model.NoveltyFilter;
+import com.study.apiservicenews.model.Role;
 import com.study.apiservicenews.reposittory.ClientRepository;
 import com.study.apiservicenews.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -17,6 +19,15 @@ import java.util.List;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public Client findByName(String name) {
+        return clientRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundEntityException(
+                        MessageFormat.format("Entity by name {0} not found", name)));
+    }
 
     @Override
     public List<Client> findAll(NoveltyFilter filter) {
@@ -35,6 +46,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client saveClient(Client client) {
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
+        client.getRoles().forEach(role -> role.setClient(client));
+
         return clientRepository.save(client);
     }
 

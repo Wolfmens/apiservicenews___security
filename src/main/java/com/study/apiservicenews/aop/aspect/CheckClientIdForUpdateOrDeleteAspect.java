@@ -1,4 +1,4 @@
-package com.study.apiservicenews.aop;
+package com.study.apiservicenews.aop.aspect;
 
 import com.study.apiservicenews.exception.IncorrectClientIIdException;
 
@@ -32,7 +32,7 @@ public class CheckClientIdForUpdateOrDeleteAspect {
     private final NoveltyCommentService noveltyCommentService;
 
 
-    @Before(value = "@annotation(CheckClientId)")
+    @Before(value = "@annotation(com.study.apiservicenews.aop.annotation.CheckClientId)")
     public void checkClientIdBefore(JoinPoint joinPoint) {
         HttpServletRequest httpServletRequest = getHttpServletRequest();
         var pathVariables = (Map<String, String>) httpServletRequest

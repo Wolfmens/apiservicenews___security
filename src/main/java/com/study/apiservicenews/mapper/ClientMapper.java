@@ -1,6 +1,7 @@
 package com.study.apiservicenews.mapper;
 
 import com.study.apiservicenews.model.Client;
+import com.study.apiservicenews.model.Role;
 import com.study.apiservicenews.web.model.client.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,6 +14,7 @@ import java.util.List;
         uses = {NoveltyMapper.class})
 public interface ClientMapper {
 
+    @Mapping(target = "roles", expression = "java(request.getRoles().stream().map(Role::from).toList())")
     Client requestToClient(IncomingClientRequest request);
 
     @Mapping(source = "clientId", target = "id")

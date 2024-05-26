@@ -1,5 +1,6 @@
 package com.study.apiservicenews.web.controller;
 
+import com.study.apiservicenews.aop.annotation.CheckRole;
 import com.study.apiservicenews.mapper.ClientMapper;
 import com.study.apiservicenews.model.Client;
 import com.study.apiservicenews.model.NoveltyFilter;
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,11 +26,14 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ClientWithoutCommentList> findAll(@Valid NoveltyFilter filter) {
         return ResponseEntity.ok().body(clientMapper.clientListToClientWithoutCommentList(clientService.findAll(filter)));
     }
 
     @GetMapping("/{id}")
+    @CheckRole
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<ClientResponse> findById(@PathVariable
                                                    @NotNull(message = "Client ID {value.notblank}") Long id) {
         return ResponseEntity.ok().body(clientMapper.clientToResponse(clientService.findById(id)));
@@ -42,6 +47,8 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
+    @CheckRole
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<ClientResponse> update(@PathVariable
                                                  @NotNull(message = "Client ID {value.notblank}") Long id,
                                                  @RequestBody @Valid IncomingClientRequest request) {
@@ -51,6 +58,8 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
+    @CheckRole
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<Void> delete(@PathVariable
                                        @NotNull(message = "Client ID {value.notblank}") Long id) {
         clientService.deleteById(id);

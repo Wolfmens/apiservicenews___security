@@ -24,6 +24,7 @@ public class NoveltyCategoryController {
     private final NoveltyCategoryMapper noveltyCategoryMapper;
 
     @GetMapping
+
     public ResponseEntity<NoveltyCategoryListResponse> findAll(@Valid NoveltyFilter filter) {
 
         return ResponseEntity.ok().body(

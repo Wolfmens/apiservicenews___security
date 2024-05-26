@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ClientService {
 
+    Client findByName(String name);
+
     List<Client> findAll(NoveltyFilter filter);
 
     Client findById(Long id);
