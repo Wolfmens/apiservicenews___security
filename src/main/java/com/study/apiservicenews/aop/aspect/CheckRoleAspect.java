@@ -1,7 +1,9 @@
 package com.study.apiservicenews.aop.aspect;
 
+import com.study.apiservicenews.model.Client;
 import com.study.apiservicenews.security.CustomUserDetail;
 import com.study.apiservicenews.service.ClientService;
+import com.study.apiservicenews.service.NoveltyCommentService;
 import com.study.apiservicenews.service.NoveltyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class CheckRoleAspect {
 
     private final NoveltyService noveltyService;
 
+    private final NoveltyCommentService noveltyCommentService;
+
     @Before(value = "@annotation(com.study.apiservicenews.aop.annotation.CheckRole)")
     public void checkRole(JoinPoint joinPoint) {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -40,12 +44,13 @@ public class CheckRoleAspect {
 
         String nameClass = joinPoint.getTarget().getClass().getSimpleName();
         Long paramEntityId = Long.parseLong(pathVariables.get("id"));
+        var authEntity = clientService.findByName(userDetail.getUsername());
+        String nameMethod = joinPoint.getSignature().getName();
 
         boolean hasRoleAdminOrModerator = authentication.getAuthorities().stream().anyMatch((grantedAuthority ->
                 grantedAuthority.getAuthority().contains("ADMIN") ||  grantedAuthority.getAuthority().contains("MODERATOR")));
 
-        if(nameClass.equals("ClientController")) {
-            var authEntity = clientService.findByName(userDetail.getUsername());
+        if (nameClass.equals("ClientController")) {
             if (!hasRoleAdminOrModerator && !authEntity.getId().equals(paramEntityId)) {
                 throw new RuntimeException(
                         MessageFormat.format(
@@ -55,25 +60,37 @@ public class CheckRoleAspect {
             }
         }
         if (nameClass.equals("NoveltyController")) {
-            String nameMethod = joinPoint.getSignature().getName();
             var noveltyEntity = noveltyService.findById(paramEntityId);
-            var authEntity = clientService.findByName(userDetail.getUsername());
-            switch (nameMethod) {
-                case "update" -> {
-                    if (!authEntity.getId().equals(noveltyEntity.getClient().getId())) {
-                        throw new RuntimeException(
-                                MessageFormat.format(
-                                        "Update error!! Novelty by id {0} created by another user",
-                                        noveltyEntity.getId()));
-                    }
+            Long creatorNoveltyId = noveltyEntity.getClient().getId();
+            actionByNameMethodAndRoleClient(nameMethod,hasRoleAdminOrModerator, authEntity, creatorNoveltyId, paramEntityId);
+        }
+        if (nameClass.equals("NoveltyCommentController")) {
+            var noveltyCommentEntity = noveltyCommentService.findById(paramEntityId);
+            Long creatorCommentId = noveltyCommentEntity.getNovelty().getClient().getId();
+            actionByNameMethodAndRoleClient(nameMethod,hasRoleAdminOrModerator,authEntity, creatorCommentId, paramEntityId);
+        }
+    }
+
+    private void actionByNameMethodAndRoleClient(String nameMethod,
+                                                 Boolean hasRole,
+                                                 Client authEntity,
+                                                 Long compareEntityId,
+                                                 Long paramEntityIdFromRequest) {
+        switch (nameMethod) {
+            case "update" -> {
+                if (!authEntity.getId().equals(compareEntityId)) {
+                    throw new RuntimeException(
+                            MessageFormat.format(
+                                    "Update error!! Entity by id {0} from request created by another user",
+                                    paramEntityIdFromRequest));
                 }
-                case "delete" -> {
-                    if (!hasRoleAdminOrModerator && !authEntity.getId().equals(noveltyEntity.getClient().getId())) {
-                        throw new RuntimeException(
-                                MessageFormat.format(
-                                        "Delete error!! Novelty by id {0} created by another user",
-                                        noveltyEntity.getId()));
-                    }
+            }
+            case "delete" -> {
+                if (!hasRole && !authEntity.getId().equals(compareEntityId)) {
+                    throw new RuntimeException(
+                            MessageFormat.format(
+                                    "Delete error!! Entity by id {0} from request created by another user",
+                                    paramEntityIdFromRequest));
                 }
             }
         }
